@@ -11,6 +11,9 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    pelProv.getPeliculasPopulares();
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: false,
@@ -67,14 +70,14 @@ class HomePage extends StatelessWidget {
             padding: EdgeInsets.only(left: 20.0), 
             ),
           SizedBox(height: 5.0),
-          FutureBuilder(
-            future: pelProv.getPeliculasPopulares(),
+          StreamBuilder(
+            stream: pelProv.peliculasPopularesStream,
             builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
 
               if(snapshot.hasData) {
-                return PeliculasPopulares(peliculas: snapshot.data);
+                return PeliculasPopulares(peliculas: snapshot.data, siguientePagina: pelProv.getPeliculasPopulares);
               } else {
-                return CircularProgressIndicator();
+                return Center(child:CircularProgressIndicator());
               }
             }
             ),
