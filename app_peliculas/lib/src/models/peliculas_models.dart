@@ -52,7 +52,7 @@ class Pelicula {
     this.posterPath,
   });
 
-  Pelicula.fromJsonMap(Map<String, dynamic> jsonPelicula) {
+  Pelicula.fromJsonMap(Map<String, dynamic> json) {
 
     popularity       = json['popularity'] / 1;
     id               = json['id'];
@@ -71,5 +71,19 @@ class Pelicula {
 
   }
 
+
+  getImagenPortada() {
+    
+    if (posterPath == null) {
+    
+      return 'https://st2.depositphotos.com/3904951/8925/v/450/depositphotos_89250312-stock-illustration-photo-picture-web-icon-in.jpg';
+    
+    }else {
+
+    return 'https://image.tmdb.org/t/p/w500/$posterPath';
+
+    }
+    
+  }
 
 }

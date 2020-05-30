@@ -1,7 +1,14 @@
+import 'dart:ffi';
+
+import 'package:app_peliculas/src/providers/peliculas_providers.dart';
 import 'package:app_peliculas/src/widgets/card_swiper_widget.dart';
+import 'package:app_peliculas/src/widgets/peliculas_populares.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
+  
+  final PeliculasProvider pelProv = new PeliculasProvider();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,8 +25,10 @@ class HomePage extends StatelessWidget {
       ),
       body: Container(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
             _swiperTarjetas(),
+            _peliculasPopulares(context),
           ],
         ),
       ));
@@ -27,8 +36,50 @@ class HomePage extends StatelessWidget {
 
   Widget _swiperTarjetas() {
 
-    return CardSwiper(
-      peliculas: ['Batman', 'Cars', 'Rapido y Furioso'],
+    
+    return FutureBuilder(
+      future: pelProv.getPeliculasEnCines(),
+      builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
+        
+        if(snapshot.hasData) {
+          return CardSwiper(peliculas: snapshot.data);
+        } else {
+          return Container(
+            height: 400,
+            child: Center(
+              child: CircularProgressIndicator()
+              ));
+        }
+        
+        
+      },
+    );
+  }
+
+  Widget _peliculasPopulares(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Container(
+            child: Text('Populares', style: Theme.of(context).textTheme.subtitle1),
+            padding: EdgeInsets.only(left: 20.0), 
+            ),
+          SizedBox(height: 5.0),
+          FutureBuilder(
+            future: pelProv.getPeliculasPopulares(),
+            builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
+
+              if(snapshot.hasData) {
+                return PeliculasPopulares(peliculas: snapshot.data);
+              } else {
+                return CircularProgressIndicator();
+              }
+            }
+            ),
+        ],
+      ),
     );
   }
 }

@@ -19,19 +19,21 @@ class CardSwiper extends StatelessWidget {
     return Container(
       padding: EdgeInsets.only(top: 10.0),
       child: new Swiper(
+        layout: SwiperLayout.STACK,
         itemWidth: _screenSize.width * 0.7,
         itemHeight: _screenSize.height * 0.5,
         itemBuilder: (BuildContext context,int index){
           return ClipRRect(
-            child : Image.network("http://via.placeholder.com/350x150",fit: BoxFit.cover),
             borderRadius: BorderRadius.circular(20.0),
+            child : FadeInImage(
+              image: NetworkImage(peliculas[index].getImagenPortada()),
+              placeholder: AssetImage('assets/no-image.jpg'),
+              fit: BoxFit.cover,
+            ),
           );
 
         },
-        layout: SwiperLayout.STACK,
         itemCount: peliculas.length,
-        //pagination: new SwiperPagination(),
-        //control: new SwiperControl(),
       ),
     );
   }
