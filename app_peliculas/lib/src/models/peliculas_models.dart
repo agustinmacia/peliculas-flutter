@@ -20,6 +20,7 @@ class Peliculas {
 }
 
 class Pelicula {
+  String uniqueId;
   double popularity;
   int id;
   bool video;
@@ -84,6 +85,14 @@ class Pelicula {
 
     }
     
+  }
+
+  getBackgroundImage() {
+    if (backdropPath == null) {
+      return 'https://st2.depositphotos.com/3904951/8925/v/450/depositphotos_89250312-stock-illustration-photo-picture-web-icon-in.jpg';
+    } else {
+      return 'https://image.tmdb.org/t/p/w500/$backdropPath';
+    }
   }
 
 }

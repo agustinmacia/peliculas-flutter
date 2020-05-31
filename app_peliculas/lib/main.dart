@@ -1,4 +1,5 @@
 import 'package:app_peliculas/src/pages/home_page.dart';
+import 'package:app_peliculas/src/pages/pelicula_detalle.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
@@ -11,7 +12,8 @@ class MyApp extends StatelessWidget {
       title: 'Películas',
       initialRoute: '/',
       routes: {
-        '/'    : (BuildContext context) => HomePage(),
+        '/'       : (BuildContext context) => HomePage(),
+        'detalle' : (BuildContext context) => PeliculaDetalle(),
       },
     );
   }

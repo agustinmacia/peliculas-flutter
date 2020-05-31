@@ -26,28 +26,36 @@ class PeliculasPopulares extends StatelessWidget {
 
     return Container(
       height: _screenSize.height * 0.25,
-      child: PageView(
-        children: _tarjetas(context),
+      child: PageView.builder(
         controller: _pageController,
         pageSnapping: false,
+        itemBuilder: (context, i) {
+          return _crearTarjeta(context, peliculas[i]);
+        },
+        itemCount: peliculas.length,
       ),
     );
   }
 
-  List<Widget> _tarjetas(BuildContext context) {
 
-    return peliculas.map((pelicula) {
-      return Container(
+  Widget _crearTarjeta(BuildContext context, Pelicula pelicula) {
+    
+    pelicula.uniqueId = '${pelicula.id}-poster';
+
+    final tarjeta =  Container(
         margin: EdgeInsets.only(right: 15.0),
         child: Column(
           children: <Widget>[
-            ClipRRect(
-                borderRadius: BorderRadius.circular(20.0),
-                child: FadeInImage(
-                image: NetworkImage(pelicula.getImagenPortada()),
-                placeholder: AssetImage('assets/no-image.jpg'),
-                fit: BoxFit.cover,
-                height: 160.0,
+            Hero(
+              tag: pelicula.uniqueId,
+              child: ClipRRect(
+              borderRadius: BorderRadius.circular(20.0),
+              child: FadeInImage(
+              image: NetworkImage(pelicula.getImagenPortada()),
+              placeholder: AssetImage('assets/no-image.jpg'),
+              fit: BoxFit.cover,
+              height: 160.0,
+                ),
               ),
             ),
             SizedBox(height: 5.0),
@@ -57,6 +65,39 @@ class PeliculasPopulares extends StatelessWidget {
           ],
         ),
       );
-    }).toList();
+
+    return GestureDetector(
+      child: tarjeta,
+      onTap: (){
+        Navigator.pushNamed(context, 'detalle', arguments: pelicula); 
+      },
+    );
   }
+
+  // List<Widget> _tarjetas(BuildContext context) {
+
+  //   return peliculas.map((pelicula) {
+      
+  //     return Container(
+  //       margin: EdgeInsets.only(right: 15.0),
+  //       child: Column(
+  //         children: <Widget>[
+  //           ClipRRect(
+  //               borderRadius: BorderRadius.circular(20.0),
+  //               child: FadeInImage(
+  //               image: NetworkImage(pelicula.getImagenPortada()),
+  //               placeholder: AssetImage('assets/no-image.jpg'),
+  //               fit: BoxFit.cover,
+  //               height: 160.0,
+  //             ),
+  //           ),
+  //           SizedBox(height: 5.0),
+  //           Text(pelicula.title,
+  //           overflow: TextOverflow.ellipsis,
+  //           style: Theme.of(context).textTheme.caption),
+  //         ],
+  //       ),
+  //     );
+  //   }).toList();
+  // }
 }
